@@ -57,4 +57,13 @@ public class Lab2Test {
         assertEquals("20-1", Lab2.performAllMultiplicationsInInput("4*5-1"));
         assertEquals("-25", Lab2.performAllMultiplicationsInInput("-5*5"));
     }
+
+    /**
+     * test function performAllDivisionInInput that performs all division in the input expression
+     */
+    @Test
+    public void testPerformAllDivisionInInput(){
+        assertEquals("-1-5", Lab2.performAllDivisionInInput("-4/4-5"));
+        assertEquals("1-1", Lab2.performAllDivisionInInput("4/5-1"));
+    }
 }

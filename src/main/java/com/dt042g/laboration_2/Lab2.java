@@ -91,7 +91,6 @@ public class Lab2 {
      * @return
      */
     public static String performAllMultiplicationsInInput(String expression) {
-        String sign = "*";
         String regex = "(\\+|-)";
         if(!expression.contains("*")){
             return expression;
@@ -104,6 +103,28 @@ public class Lab2 {
                 int result = Integer.parseInt(numberStrings.get(0));
                 for (int j = 1; j < numberStrings.size(); j++) {
                     result *= Integer.parseInt(numberStrings.get(j));
+                }
+                String resultStr = "" + result;
+                resultString = resultString.replace(subExp, resultStr);
+            }
+        }
+        return resultString;
+    }
+
+    public static String performAllDivisionInInput(String expression) {
+        String regex = "[\\+\\*-]";
+        if(!expression.contains("/")){
+            return expression;
+        }
+        String resultString = expression;
+        String[] subExpressions = expression.split(regex);
+        for (String subExp : subExpressions) {
+            if (subExp.contains("/")) {
+                List<String> numberStrings = Arrays.asList(subExp.split("/"));
+                int result = Integer.parseInt(numberStrings.get(0));
+                for (int j = 1; j < numberStrings.size(); j++) {
+                    double temp = (double)result/Integer.parseInt(numberStrings.get(j));
+                    result = (int) Math.round(temp);
                 }
                 String resultStr = "" + result;
                 resultString = resultString.replace(subExp, resultStr);
