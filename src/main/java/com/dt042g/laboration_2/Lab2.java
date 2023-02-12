@@ -36,4 +36,79 @@ public class Lab2 {
         }
         return result;
     }
+
+    /**
+     *
+     * @param expression
+     * @return
+     */
+    public static String performAllAdditionInInput(String expression) {
+        if(!expression.contains("+")){
+            return expression;
+        }
+        boolean startWithNeg = expression.charAt(0) == '-';
+        if(startWithNeg){
+            StringBuilder sb = new StringBuilder(expression);
+            expression = sb.deleteCharAt(0).toString();
+        }
+        List<String>  subExpressions = Arrays.asList(expression.split("-"));
+        StringBuilder result1 = new StringBuilder();
+        for(int i = 0; i<subExpressions.size(); i++){
+            String subExp = subExpressions.get(i);
+            if(subExp.contains("+")){
+                List<String>  numberStrings = Arrays.asList(subExp.split("\\+"));
+                System.out.println("array after split at +:" + numberStrings);
+                int result;
+                if(startWithNeg  && i==0){
+                    result = -Integer.parseInt(numberStrings.get(0));
+                }else{
+                    result =Integer.parseInt(numberStrings.get(0));
+                }
+                for(int j=1; j<numberStrings.size(); j++){
+                    result += Integer.parseInt(numberStrings.get(j));
+                }
+                System.out.println("result: " + result);
+                result1.append(result);
+            } else{
+                if(startWithNeg  && i==0){
+                    result1.append("-").append(subExpressions.get(i));
+                }else{
+                    result1.append(subExpressions.get(i));
+                }
+            }
+
+            if(i<subExpressions.size()-1){
+                result1.append("-");
+            }
+
+        }
+        return result1.toString();
+    }
+
+    /**
+     *
+     * @param expression
+     * @return
+     */
+    public static String performAllMultiplicationsInInput(String expression) {
+        String sign = "*";
+        String regex = "(\\+|-)";
+        if(!expression.contains("*")){
+            return expression;
+        }
+        String resultString = expression;
+        String[] subExpressions = expression.split(regex);
+        for (String subExp : subExpressions) {
+            if (subExp.contains("*")) {
+                List<String> numberStrings = Arrays.asList(subExp.split("\\*"));
+                int result = Integer.parseInt(numberStrings.get(0));
+                for (int j = 1; j < numberStrings.size(); j++) {
+                    result *= Integer.parseInt(numberStrings.get(j));
+                }
+                String resultStr = "" + result;
+                resultString = resultString.replace(subExp, resultStr);
+            }
+        }
+        return resultString;
+    }
 }

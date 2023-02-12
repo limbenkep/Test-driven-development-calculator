@@ -38,4 +38,23 @@ public class Lab2Test {
         assertEquals(1, Lab2.performAllSubtractionInInput("5-4"));
         assertEquals(-12, Lab2.performAllSubtractionInInput("-3-5-4"));
     }
+
+    /**
+     * test function performAllAdditionInInput that performs all addition in the input expression
+     */
+    @Test
+    public void testPerformAllAdditionInInput(){
+        assertEquals("6", Lab2.performAllAdditionInInput("3+3"));
+        assertEquals("1-6", Lab2.performAllAdditionInInput("-3+4-5+1"));
+    }
+
+    /**
+     * test function performAllMultiplicationsInInput that performs all multiplication in the input expression
+     */
+    @Test
+    public void testPerformAllMultiplicationsInInput(){
+        assertEquals("-4+20", Lab2.performAllMultiplicationsInInput("-4+4*5"));
+        assertEquals("20-1", Lab2.performAllMultiplicationsInInput("4*5-1"));
+        assertEquals("-25", Lab2.performAllMultiplicationsInInput("-5*5"));
+    }
 }
