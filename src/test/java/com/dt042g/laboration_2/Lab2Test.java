@@ -6,9 +6,12 @@ import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -30,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
  *
  */
 public class Lab2Test {
+    private JSONObject jsonObject;
     /**
      * test function performAllSubtractionInInput that computes all subtractions in the input expression
      */
@@ -81,8 +85,36 @@ public class Lab2Test {
      */
     @Test
     public void testResolveBracketsInInput(){
-        assertEquals("3-5+4-1", Lab2.resolveBracketsinInput("3-5+4-1"));
-        assertEquals("3-1-1", Lab2.resolveBracketsinInput("3-(5-4)-1"));
+        assertEquals("3-5+4-1", Lab2.resolveBracketsInInput("3-5+4-1"));
+        assertEquals("3-1-1", Lab2.resolveBracketsInInput("3-(5-4)-1"));
 
+    }
+
+    /**
+     * test function computeInput that computes the input expression and returns the result
+     * or returns the expression if it is not a valid mathematical expression
+     */
+    @Test
+    public void testComputeInput(){
+        readTestValidationExpressions();
+        Set<String> keys = jsonObject.keySet();
+        ArrayList<String> expressions = new ArrayList<>(keys);
+        for(String expression:expressions){
+            assertEquals(jsonObject.get(expression), Lab2.computeInput(expression));
+        }
+    }
+
+    private void readTestValidationExpressions(){
+        String fileDir = Path.of(".", "lab2_expressions").toString();
+        String filename= "expressions.json";
+        JSONParser parser = new JSONParser();
+        try (Reader reader = new FileReader(Paths.get(fileDir, filename).toString())) {
+            jsonObject = (JSONObject) parser.parse(reader);
+            Set<String> keys = jsonObject.keySet();
+            ArrayList<String> expressions = new ArrayList<>(keys);
+            System.out.println("Expression: " + expressions);
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

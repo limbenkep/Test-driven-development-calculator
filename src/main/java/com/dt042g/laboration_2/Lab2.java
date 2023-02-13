@@ -57,7 +57,6 @@ public class Lab2 {
             String subExp = subExpressions.get(i);
             if(subExp.contains("+")){
                 List<String>  numberStrings = Arrays.asList(subExp.split("\\+"));
-                System.out.println("array after split at +:" + numberStrings);
                 int result;
                 if(startWithNeg  && i==0){
                     result = -Integer.parseInt(numberStrings.get(0));
@@ -67,7 +66,6 @@ public class Lab2 {
                 for(int j=1; j<numberStrings.size(); j++){
                     result += Integer.parseInt(numberStrings.get(j));
                 }
-                System.out.println("result: " + result);
                 result1.append(result);
             } else{
                 if(startWithNeg  && i==0){
@@ -156,7 +154,7 @@ public class Lab2 {
         return resultString;
     }
 
-    public static String resolveBracketsinInput(String expression) {
+    public static String resolveBracketsInInput(String expression) {
         //repeat this until all brackets are resolved
         while(expression.contains("(")){
             //Get the indices of the open and close brackets
@@ -171,11 +169,37 @@ public class Lab2 {
             result = performAllMultiplicationsInInput(result);
             result = performAllAdditionInInput(result);
             result = "" + performAllSubtractionInInput(result);
-            //replace the backets and it's content in the copy of the original Input
+            //replace the brackets and it's content in the copy of the original Input
             //with the current value of input which is the answer to the expression in brackets
             //assign the edited original input to input
             expression = expression.replace("(" + brackeString + ")", result);
         }
         return expression;
+    }
+
+    /**
+     * removes all spaces in a string
+     * @return string without spaces
+     */
+    public static String removeSpacesInString(String string){
+        return string.replaceAll("\\s","");
+    }
+
+    public static long computeInput(String expression) {
+        System.out.println("Expression: " + expression);
+        //remove spaces from expression
+        expression = removeSpacesInString(expression);
+        //compute all expressions in brackets
+        expression = resolveBracketsInInput(expression);
+        //compute all exponents
+        expression = performAllExponentsInInput(expression);
+        //compute all divisions
+        expression = performAllDivisionInInput(expression);
+        //compute all multiplications
+        expression = performAllMultiplicationsInInput(expression);
+        //compute all additions
+        expression = performAllAdditionInInput(expression);
+        //compute all subtractions
+        return performAllSubtractionInInput(expression);
     }
 }
