@@ -66,4 +66,23 @@ public class Lab2Test {
         assertEquals("-1-5", Lab2.performAllDivisionInInput("-4/4-5"));
         assertEquals("1-1", Lab2.performAllDivisionInInput("4/5-1"));
     }
+
+    /**
+     * test function performAllMultiplicationsInInput that performs all multiplication in the input expression
+     */
+    @Test
+    public void testPerformAllExponentsInInput(){
+        assertEquals("-4+16", Lab2.performAllExponentsInInput("-4+4^2"));
+        assertEquals("125-16", Lab2.performAllExponentsInInput("5^3-2^4"));
+    }
+
+    /**
+     * test function performAllSubtractionInInput that performs all subtraction in the input expression
+     */
+    @Test
+    public void testResolveBracketsInInput(){
+        assertEquals("3-5+4-1", Lab2.resolveBracketsinInput("3-5+4-1"));
+        assertEquals("3-1-1", Lab2.resolveBracketsinInput("3-(5-4)-1"));
+
+    }
 }

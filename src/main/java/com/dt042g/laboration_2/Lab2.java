@@ -86,9 +86,13 @@ public class Lab2 {
     }
 
     /**
-     *
-     * @param expression
-     * @return
+     * This function resolves all exponents in the input expression
+     * and replace the resolved parts with the solution
+     * This function is meant to be used for solving equations in
+     * order of operator precedence
+     * it is assumed that input does not contain brackets but may contain ^,/,*,+,-
+     * @param expression mathematical expression to be solved
+     * @return a reduces math expression with all exponents computed.
      */
     public static String performAllMultiplicationsInInput(String expression) {
         String regex = "(\\+|-)";
@@ -131,5 +135,47 @@ public class Lab2 {
             }
         }
         return resultString;
+    }
+
+    public static String performAllExponentsInInput(String expression) {
+        String sign = "^";
+        String regex = "[\\+\\*-/]";
+        if(!expression.contains(sign)){
+            return expression;
+        }
+        String resultString = expression;
+        String[] subExpressions = expression.split(regex);
+        for (String subExp : subExpressions) {
+            if (subExp.contains(sign)) {
+                List<String> numberStrings = Arrays.asList(subExp.split("\\^"));
+                int result = (int) Math.pow(Integer.parseInt(numberStrings.get(0)), Integer.parseInt(numberStrings.get(1)));
+                String resultStr = "" + result;
+                resultString = resultString.replace(subExp, resultStr);
+            }
+        }
+        return resultString;
+    }
+
+    public static String resolveBracketsinInput(String expression) {
+        //repeat this until all brackets are resolved
+        while(expression.contains("(")){
+            //Get the indices of the open and close brackets
+            int startIndex = expression.indexOf("(") + 1;
+            int endIndex = expression.indexOf(")");
+            //get a copy of the expression withing the bracket
+            String brackeString = expression.substring(startIndex, endIndex);
+            // assign the expression in the bracket to input and compute input
+            String result = brackeString;
+            result = performAllExponentsInInput(result);
+            result = performAllDivisionInInput(result);
+            result = performAllMultiplicationsInInput(result);
+            result = performAllAdditionInInput(result);
+            result = "" + performAllSubtractionInInput(result);
+            //replace the backets and it's content in the copy of the original Input
+            //with the current value of input which is the answer to the expression in brackets
+            //assign the edited original input to input
+            expression = expression.replace("(" + brackeString + ")", result);
+        }
+        return expression;
     }
 }
