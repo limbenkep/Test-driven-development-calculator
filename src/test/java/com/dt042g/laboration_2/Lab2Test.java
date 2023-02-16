@@ -35,28 +35,26 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class Lab2Test {
     private JSONObject jsonObject;
     /**
-     * test function performAllSubtractionInInput that computes all subtractions in the input expression
+     * test function performAdditionAndSubtraction with only subtraction in the expression.
+     * This should compute all subtractions in the input expression.
      */
     @Test
     public void testPerformAllSubtractionInInput(){
-        assertEquals(1, Lab2.performAllSubtractionInInput("5-4"));
-        assertEquals(-12, Lab2.performAllSubtractionInInput("-3-5-4"));
+        assertEquals(1, Lab2.performAdditionAndSubtraction("5-4"));
+        assertEquals(-12, Lab2.performAdditionAndSubtraction("-3-5-4"));
     }
 
     /**
-     * test function performAllAdditionInInput that performs all addition in the input expression
+     * test function performAdditionAndSubtraction with only addition in the expression.
+     * This should compute all additions in the input expression.
      */
     @Test
     public void testPerformAllAdditionInInput(){
-        assertEquals("6", Lab2.performAllAdditionInInput("3+3"));
-        assertEquals("1-6", Lab2.performAllAdditionInInput("-3+4-5+1"));
+        assertEquals("6", Lab2.performAdditionAndSubtraction("3+3"));
+        assertEquals("7", Lab2.performAdditionAndSubtraction("-3+4+5+1"));
     }
 
-    @Test
-    public void testPerformAdditionAndSubtraction(){
-        assertEquals("1*7", Lab2.performAdditionAndSubtraction("8-7*4+3"));
-        assertEquals("-1*7", Lab2.performAdditionAndSubtraction("7-8*4+3"));
-    }
+
 
     @Test
     public void testPerformMultiplicationAndDivision(){
@@ -77,26 +75,50 @@ public class Lab2Test {
     }
 
     /**
-     * test function performAllMultiplicationsInInput that performs all multiplication in the input expression
+     * test function performMultiplicationAndDivision with only multiplication in the expression.
+     * This should compute all multiplication in the input expression
      */
     @Test
-    public void testPerformAllMultiplicationsInInput(){
-        assertEquals("-4+20", Lab2.performAllMultiplicationsInInput("-4+4*5"));
-        assertEquals("20-1", Lab2.performAllMultiplicationsInInput("4*5-1"));
-        assertEquals("-25", Lab2.performAllMultiplicationsInInput("-5*5"));
+    public void testPerformMultiplicationAndDivisionWithOnlyMultiplication(){
+        assertEquals("20", Lab2.performMultiplicationAndDivision("4*5"));
+        assertEquals("-25", Lab2.performMultiplicationAndDivision("-5*5"));
+        assertEquals("-25+20", Lab2.performMultiplicationAndDivision("-5*5+4*5"));
+
     }
 
     /**
-     * test function performAllDivisionInInput that performs all division in the input expression
+     * test function performMultiplicationAndDivision with only division in the expression.
+     * This should compute all division in the input expression
      */
     @Test
-    public void testPerformAllDivisionInInput(){
-        assertEquals("-1-5", Lab2.performAllDivisionInInput("-4/4-5"));
-        assertEquals("1-1", Lab2.performAllDivisionInInput("4/5-1"));
+    public void testPerformMultiplicationAndDivisionWithOnlyDivision(){
+        assertEquals("-1", Lab2.performMultiplicationAndDivision("-4/4"));
+        assertEquals("1-2", Lab2.performMultiplicationAndDivision("4/5-2/1"));
     }
 
     /**
-     * test function performAllMultiplicationsInInput that performs all multiplication in the input expression
+     * test function performMultiplicationAndDivision with division first in the expression.
+     * This should compute in the order the operator comes in the input expression
+     */
+    @Test
+    public void testPerformMultiplicationAndDivisionWithDivisionFirst(){
+        assertEquals("-2", Lab2.performMultiplicationAndDivision("-4/4*2"));
+    }
+
+    /**
+     * test function performMultiplicationAndDivision with multiplication firstin the expression.
+     * This should compute in the order the operator comes in the input expression
+     */
+    @Test
+    public void testPerformMultiplicationAndDivisionWithMultiplicationFirst(){
+        assertEquals("-1", Lab2.performMultiplicationAndDivision("-4/4"));
+        assertEquals("1-2", Lab2.performMultiplicationAndDivision("4/5-2/1"));
+    }
+
+
+
+    /**
+     * test function performAllExponentsInInput that performs all exponents in the input expression
      */
     @Test
     public void testPerformAllExponentsInInput(){
@@ -105,7 +127,7 @@ public class Lab2Test {
     }
 
     /**
-     * test function performAllSubtractionInInput that performs all subtraction in the input expression
+     * test function resolveBracketsInInput that computes expressions inside brackets in the input expression
      */
     @Test
     public void testResolveBracketsInInput(){
@@ -113,6 +135,25 @@ public class Lab2Test {
         assertEquals("3-1-1", Lab2.resolveBracketsInInput("3-(5-4)-1"));
 
     }
+    /**
+     * test function performAdditionAndSubtraction within computeInput  where addition comes first in the expression.
+     * This should compute all subtractions and additions in the order they appear in the input expression.
+     */
+    @Test
+    public void testPerformAdditionAndSubtractionWithAdditionFirst(){
+        assertEquals("33", Lab2.computeInput("8+7*4-3"));
+        assertEquals("21", Lab2.computeInput("4+3*8-7"));
+    }
+
+    /**
+     * test function performAdditionAndSubtraction within computeInput where addition comes first in the expression.
+     * This should compute all subtractions and additions in the order they appear in the input expression.
+     */
+    @Test
+    public void testPerformAdditionAndSubtractionWithSubtractionFirst(){
+        assertEquals("-17", Lab2.computeInput("8-7*4+3"));
+    }
+
 
     /**
      * test function computeInput that computes the input expression and returns the result
@@ -127,6 +168,8 @@ public class Lab2Test {
             assertEquals("" + jsonObject.get(expression), Lab2.computeInput(expression));
         }
     }
+
+
 
     /**
      * Tests removeWhiteSpacesInString method which if the white spaces are removed from a string
