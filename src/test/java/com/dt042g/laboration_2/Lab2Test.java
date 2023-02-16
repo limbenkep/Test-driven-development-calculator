@@ -52,6 +52,30 @@ public class Lab2Test {
         assertEquals("1-6", Lab2.performAllAdditionInInput("-3+4-5+1"));
     }
 
+    @Test
+    public void testPerformAdditionAndSubtraction(){
+        assertEquals("1*7", Lab2.performAdditionAndSubtraction("8-7*4+3"));
+        assertEquals("-1*7", Lab2.performAdditionAndSubtraction("7-8*4+3"));
+    }
+
+    @Test
+    public void testPerformMultiplicationAndDivision(){
+        assertEquals("8-12", Lab2.performMultiplicationAndDivision("8-9*4/3"));
+        assertEquals("16+3", Lab2.performMultiplicationAndDivision("8/2*4+3"));
+    }
+    /**
+     * Test addSpaceAroundOperatorsInInput method which adds a space before and after all operators
+     * except for the negative sign of a number which can occur att the beginning and end of a
+     */
+    @Test
+    public void testaddSpaceAroundOperatorsInInput(){
+        assertEquals("3 + 4", Lab2.addSpaceAroundOperatorsInInput("3+4"));
+        //Do not add space around '-' operator that represents negative numbers that can occur
+        //at the begining of the expression or after an open bracket
+        assertEquals("-3 + 4 * (-4 + 2)", Lab2.addSpaceAroundOperatorsInInput("-3+4*(-4+2)"));
+
+    }
+
     /**
      * test function performAllMultiplicationsInInput that performs all multiplication in the input expression
      */
@@ -100,9 +124,196 @@ public class Lab2Test {
         Set<String> keys = jsonObject.keySet();
         ArrayList<String> expressions = new ArrayList<>(keys);
         for(String expression:expressions){
-            assertEquals(jsonObject.get(expression), Lab2.computeInput(expression));
+            assertEquals("" + jsonObject.get(expression), Lab2.computeInput(expression));
         }
     }
+
+    /**
+     * Tests removeWhiteSpacesInString method which if the white spaces are removed from a string
+     */
+    @Test
+    @DisplayName("should remove all white spaces from string")
+    public void testRemoveSpacesInString(){
+        assertEquals("2+3+4", Lab2.removeSpacesInString("2 +  3 + 4"), "should removes whitespaces");
+    }
+
+    /**
+     * Test test checks if the character in a char is a number
+     */
+    @Test
+    @DisplayName("Test if character is a number")
+    public void testIsANumber()
+    {
+        //should return true if the passed char is a number
+        assertTrue(Lab2.isANumber('3'));
+        //should return false if the passed char is a letter
+        assertFalse(Lab2.isANumber('b'));
+        //should return false if the passed char is an operator
+        assertFalse(Lab2.isANumber('+'));
+        //should return false if the passed char is a bracket
+        assertFalse(Lab2.isANumber(')'));
+    }
+
+    /**
+     * Test if a character is an operator
+     */
+    @Test
+    @DisplayName("Test is character is an operator")
+    public void testIsAnOperator()
+    {
+        //should assert false if the passed char is not one of
+        //the operators; '+', '-', '*', '/', '^'
+        assertFalse(Lab2.isAnOperator('3'));
+        assertFalse(Lab2.isAnOperator(')'));
+        assertFalse(Lab2.isAnOperator('('));
+        assertFalse(Lab2.isAnOperator('b'));
+
+        //should return true if the passed char is one of
+        //the operators; '+', '-', '*', '/', '^'
+        assertTrue(Lab2.isAnOperator('+'));
+        assertTrue(Lab2.isAnOperator('-'));
+        assertTrue(Lab2.isAnOperator('^'));
+        assertTrue(Lab2.isAnOperator('/'));
+        assertTrue(Lab2.isAnOperator('*'));
+
+    }
+
+    /**
+     * Test if a character is a bracket
+     */
+    @Test
+    @DisplayName("Test if character is an operator")
+    public void testIsABracket()
+    {
+        //should assert false if the passed char is not a bracket
+        assertFalse(Lab2.isABracket('3'));
+        assertFalse(Lab2.isABracket('+'));
+        assertFalse(Lab2.isABracket('b'));
+        //should assert true if the passed char is a bracket
+        assertTrue(Lab2.isABracket('('));
+        assertTrue(Lab2.isABracket(')'));
+    }
+
+    /**
+     * Tests if the input expression intered in calculator contains
+     * valid characters, that is only numbers, operators and brackets
+     *
+     */
+    @Test
+    @DisplayName("Test if input contain oly valid characters")
+    public void testValidateCharactersInInput(){
+        //should assert false if string contains any characters other than numbers
+        //operators and brackets
+        assertFalse(Lab2.validateCharactersInInput("b+e+2+4"));
+        assertFalse(Lab2.validateCharactersInInput("2+4!"));
+        //should assert true if string contains only numbers or operators or brackets
+        assertTrue(Lab2.validateCharactersInInput("2+4"));
+        assertTrue(Lab2.validateCharactersInInput("2+4(3*8)"));
+        assertTrue(Lab2.validateCharactersInInput("14-11"));
+    }
+
+    /**
+     * Test InputContainsOperator method that checks is a char is an operator
+     */
+    @Test
+    @DisplayName("Input should have an operator")
+    public void testInputContainsOperator(){
+        assertFalse(Lab2.inputContainsOperator("12345678"));
+        assertTrue(Lab2.inputContainsOperator("15+4"));
+        assertTrue(Lab2.inputContainsOperator("14-11"));
+        assertTrue(Lab2.inputContainsOperator("10^3"));
+    }
+
+    /**
+     * test  method inputContainsBrackets which checks if input have a bracket
+     */
+    @Test @DisplayName("Test if Input have brackest")
+    public void testInputContainsBrackets(){
+        //assert true if input contains brackets
+        assertTrue(Lab2.inputContainsBrackets("(12)"));
+        assertTrue(Lab2.inputContainsBrackets("(45564"));
+        assertTrue(Lab2.inputContainsBrackets("45564)"));
+        assertTrue(Lab2.inputContainsBrackets("4(5564)"));
+        assertFalse(Lab2.inputContainsBrackets("45564"));
+        assertFalse(Lab2.validateInput("10^3"));
+    }
+
+    /**
+     * Test validate ProperUseOfBracket method which checks if the input
+     * for correct use of brackets.
+     * number of open and close brackets should be equal
+     * open bracket should come before closed brackets
+     * open brackets should not be follwed by an operator
+     * unless it is a negative sign
+     * close bracket should be followed by an operator or nothing
+     *
+     */
+    @Test
+    public void testValidateProperUseOfBrackets(){
+        //should assert false if the number of open brackets is not equals to
+        //number close brackets in the expression
+        assertFalse(Lab2.validateProperUseOfBrackets("(2+3*5"));
+        assertFalse(Lab2.validateProperUseOfBrackets("2+3)*5"));
+
+
+        //should assert false if the number of close bracket comes before
+        //open bracket in the expression
+        assertFalse(Lab2.validateProperUseOfBrackets(")2+(3*5"));
+        //should assert false expression contains empty brackets
+        assertFalse(Lab2.validateProperUseOfBrackets("()+2+3*5"));
+        //should assert false if a number follows closed brackets directly
+        //without being seperated by an operator
+        assertFalse(Lab2.validateProperUseOfBrackets("(2+3)5"));
+        //should assert false if an open bracket follows closed brackets directly
+        //without being seperated by an operator
+        assertFalse(Lab2.validateProperUseOfBrackets("(2+3)(3*5)"));
+        //should assert false if an operator other than '-' follows an open brackets directly
+        assertFalse(Lab2.validateProperUseOfBrackets("2+(+3*5)"));
+
+        assertTrue(Lab2.validateProperUseOfBrackets("2+3*5"));
+        assertTrue(Lab2.validateProperUseOfBrackets("(2+3)*5"));
+        assertTrue(Lab2.validateProperUseOfBrackets("(2+3*5)"));
+        assertTrue(Lab2.validateProperUseOfBrackets("(-2+3*5)"));
+        assertTrue(Lab2.validateProperUseOfBrackets("2+(3*5)"));
+        assertTrue(Lab2.validateProperUseOfBrackets("10^3"));
+    }
+
+    /**
+     * Test validateOperatorPosition method which checks proper use of operator
+     */
+    @Test
+    public void testValidateOperatorPosition(){
+        //test check expression where first character is an operator but not '-'
+        assertFalse(Lab2.validateOperatorPosition("+2+3*5"));
+        //test check expression where last character is not an operator
+        assertFalse(Lab2.validateOperatorPosition("2+3*5-"));
+        //test check expression containing two consecutive operators
+        assertFalse(Lab2.validateOperatorPosition("2+-3*5"));
+        //test check expression where first character is an operator but not '-'
+        assertFalse(Lab2.validateOperatorPosition("+2+3*5"));
+        //test check expression where last character is not an operator
+        assertFalse(Lab2.validateOperatorPosition("2+3*5-"));
+        //test check expression containing two consecutive operators
+        assertFalse(Lab2.validateOperatorPosition("2+-3*5"));
+
+        //test check expression where first character is not an operator
+        assertTrue(Lab2.validateOperatorPosition("2+3*5"));
+        //test check expression where first character is '-'
+        assertTrue(Lab2.validateOperatorPosition("-2+3*5"));
+        assertTrue(Lab2.validateOperatorPosition("10^3"));
+    }
+
+    /**
+     * Test that the function validateInput which checks if input is a valid
+     * mathemathical expression, returns true if the expression is valid and false
+     * if invalid
+     */
+    @Test
+    public void testValidateInput(){
+        assertTrue(Lab2.validateInput("14-11"));
+        assertTrue(Lab2.validateInput("10^3"));
+    }
+
 
     private void readTestValidationExpressions(){
         String fileDir = Path.of(".", "lab2_expressions").toString();
