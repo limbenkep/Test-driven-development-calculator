@@ -5,6 +5,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.FileReader;
@@ -14,6 +16,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,8 +44,10 @@ public class Lab2Test {
      */
     @Test
     public void testPerformAllSubtractionInInput(){
-        assertEquals(1, Lab2.performAdditionAndSubtraction("5-4"));
-        assertEquals(-12, Lab2.performAdditionAndSubtraction("-3-5-4"));
+        var expression1 = new Lab2("5-4");
+        assertEquals(1, expression1.performAdditionAndSubtraction());
+        var expression2 = new Lab2("-3-5-4");
+        assertEquals(-12, expression2.performAdditionAndSubtraction());
     }
 
     /**
@@ -50,16 +56,20 @@ public class Lab2Test {
      */
     @Test
     public void testPerformAllAdditionInInput(){
-        assertEquals("6", Lab2.performAdditionAndSubtraction("3+3"));
-        assertEquals("7", Lab2.performAdditionAndSubtraction("-3+4+5+1"));
+        var expression1 = new Lab2("3+3");
+        assertEquals("6", expression1.performAdditionAndSubtraction());
+        var expression2 = new Lab2("-3+4+5+1");
+        assertEquals("7", expression2.performAdditionAndSubtraction());
     }
 
 
 
     @Test
     public void testPerformMultiplicationAndDivision(){
-        assertEquals("8-12", Lab2.performMultiplicationAndDivision("8-9*4/3"));
-        assertEquals("16+3", Lab2.performMultiplicationAndDivision("8/2*4+3"));
+        var expression1 = new Lab2("8-9*4/3");
+        assertEquals("8-12", expression1.performMultiplicationAndDivision());
+        var expression2 = new Lab2("8/2*4+3");
+        assertEquals("16+3", expression2.performMultiplicationAndDivision());
     }
     /**
      * Test addSpaceAroundOperatorsInInput method which adds a space before and after all operators
@@ -80,9 +90,12 @@ public class Lab2Test {
      */
     @Test
     public void testPerformMultiplicationAndDivisionWithOnlyMultiplication(){
-        assertEquals("20", Lab2.performMultiplicationAndDivision("4*5"));
-        assertEquals("-25", Lab2.performMultiplicationAndDivision("-5*5"));
-        assertEquals("-25+20", Lab2.performMultiplicationAndDivision("-5*5+4*5"));
+        var expression1 = new Lab2("4*5");
+        assertEquals("20", expression1.performMultiplicationAndDivision());
+        var expression2 = new Lab2("-5*5");
+        assertEquals("-25", expression2.performMultiplicationAndDivision());
+        var expression3 = new Lab2("-5*5+4*5");
+        assertEquals("-25+20", expression3.performMultiplicationAndDivision());
 
     }
 
@@ -92,8 +105,10 @@ public class Lab2Test {
      */
     @Test
     public void testPerformMultiplicationAndDivisionWithOnlyDivision(){
-        assertEquals("-1", Lab2.performMultiplicationAndDivision("-4/4"));
-        assertEquals("1-2", Lab2.performMultiplicationAndDivision("4/5-2/1"));
+        var expression1 = new Lab2("-4/4");
+        assertEquals("-1", expression1.performMultiplicationAndDivision());
+        var expression2 = new Lab2("4/5-2/1");
+        assertEquals("1-2", expression2.performMultiplicationAndDivision());
     }
 
     /**
@@ -102,7 +117,8 @@ public class Lab2Test {
      */
     @Test
     public void testPerformMultiplicationAndDivisionWithDivisionFirst(){
-        assertEquals("-2", Lab2.performMultiplicationAndDivision("-4/4*2"));
+        var expression1 = new Lab2("-4/4*2");
+        assertEquals("-2", expression1.performMultiplicationAndDivision());
     }
 
     /**
@@ -111,10 +127,11 @@ public class Lab2Test {
      */
     @Test
     public void testPerformMultiplicationAndDivisionWithMultiplicationFirst(){
-        assertEquals("-1", Lab2.performMultiplicationAndDivision("-4/4"));
-        assertEquals("1-2", Lab2.performMultiplicationAndDivision("4/5-2/1"));
+        var expression1 = new Lab2("-4/4");
+        assertEquals("-1", expression1.performMultiplicationAndDivision());
+        var expression2 = new Lab2("4/5-2/1");
+        assertEquals("1-2", expression2.performMultiplicationAndDivision());
     }
-
 
 
     /**
@@ -122,8 +139,10 @@ public class Lab2Test {
      */
     @Test
     public void testPerformAllExponentsInInput(){
-        assertEquals("-4+16", Lab2.performAllExponentsInInput("-4+4^2"));
-        assertEquals("125-16", Lab2.performAllExponentsInInput("5^3-2^4"));
+        var expression1 = new Lab2("-4+4^2");
+        assertEquals("-4+16", expression1.performAllExponentsInInput());
+        var expression2 = new Lab2("5^3-2^4");
+        assertEquals("125-16", expression2.performAllExponentsInInput());
     }
 
     /**
@@ -131,8 +150,10 @@ public class Lab2Test {
      */
     @Test
     public void testResolveBracketsInInput(){
-        assertEquals("3-5+4-1", Lab2.resolveBracketsInInput("3-5+4-1"));
-        assertEquals("3-1-1", Lab2.resolveBracketsInInput("3-(5-4)-1"));
+        var expression1 = new Lab2("3-5+4-1");
+        assertEquals("3-5+4-1", expression1.resolveBracketsInInput());
+        var expression2 = new Lab2("3-(5-4)-1");
+        assertEquals("3-1-1", expression2.resolveBracketsInInput());
 
     }
     /**
@@ -141,8 +162,10 @@ public class Lab2Test {
      */
     @Test
     public void testPerformAdditionAndSubtractionWithAdditionFirst(){
-        assertEquals("33", Lab2.computeInput("8+7*4-3"));
-        assertEquals("21", Lab2.computeInput("4+3*8-7"));
+        var expression1 = new Lab2("8+7*4-3");
+        assertEquals("33", expression1.computeInput());
+        var expression2 = new Lab2("4+3*8-7");
+        assertEquals("21", expression2.computeInput());
     }
 
     /**
@@ -151,7 +174,8 @@ public class Lab2Test {
      */
     @Test
     public void testPerformAdditionAndSubtractionWithSubtractionFirst(){
-        assertEquals("-17", Lab2.computeInput("8-7*4+3"));
+        var expression2 = new Lab2("8-7*4+3");
+        assertEquals("-17", expression2.computeInput());
     }
 
 
@@ -159,14 +183,12 @@ public class Lab2Test {
      * test function computeInput that computes the input expression and returns the result
      * or returns the expression if it is not a valid mathematical expression
      */
-    @Test
-    public void testComputeInput(){
-        readTestValidationExpressions();
-        Set<String> keys = jsonObject.keySet();
-        ArrayList<String> expressions = new ArrayList<>(keys);
-        for(String expression:expressions){
-            assertEquals("" + jsonObject.get(expression), Lab2.computeInput(expression));
-        }
+    @ParameterizedTest
+    @MethodSource("readTestValidationExpressions")
+    public void testComputeInput(String s){
+        String[] expression = s.split("=");
+        var exp = new Lab2(expression[0]);
+        assertEquals(expression[1], exp.computeInput());
     }
 
 
@@ -278,7 +300,7 @@ public class Lab2Test {
         assertTrue(Lab2.inputContainsBrackets("45564)"));
         assertTrue(Lab2.inputContainsBrackets("4(5564)"));
         assertFalse(Lab2.inputContainsBrackets("45564"));
-        assertFalse(Lab2.validateInput("10^3"));
+
     }
 
     /**
@@ -286,7 +308,7 @@ public class Lab2Test {
      * for correct use of brackets.
      * number of open and close brackets should be equal
      * open bracket should come before closed brackets
-     * open brackets should not be follwed by an operator
+     * open brackets should not be followed by an operator
      * unless it is a negative sign
      * close bracket should be followed by an operator or nothing
      *
@@ -348,27 +370,36 @@ public class Lab2Test {
 
     /**
      * Test that the function validateInput which checks if input is a valid
-     * mathemathical expression, returns true if the expression is valid and false
+     * mathemathical expression and returns true if the expression is valid and false
      * if invalid
      */
     @Test
+
     public void testValidateInput(){
-        assertTrue(Lab2.validateInput("14-11"));
-        assertTrue(Lab2.validateInput("10^3"));
+        var expression1 = new Lab2("14-11");
+        assertTrue(expression1.validateInput());
+        var expression2 = new Lab2("10^3");
+        assertTrue(expression2.validateInput());
     }
 
 
-    private void readTestValidationExpressions(){
+    private static Stream<String> readTestValidationExpressions(){
         String fileDir = Path.of(".", "lab2_expressions").toString();
         String filename= "expressions.json";
         JSONParser parser = new JSONParser();
         try (Reader reader = new FileReader(Paths.get(fileDir, filename).toString())) {
-            jsonObject = (JSONObject) parser.parse(reader);
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
             Set<String> keys = jsonObject.keySet();
-            ArrayList<String> expressions = new ArrayList<>(keys);
-            System.out.println("Expression: " + expressions);
+            ArrayList<String> expressions = new ArrayList<>();
+
+            for(String key:keys){
+                expressions.add( key + "=" + jsonObject.get(key));
+
+            }
+            return expressions.stream();
         } catch (IOException | ParseException e) {
             e.printStackTrace();
+            return Stream.empty();
         }
     }
 }
