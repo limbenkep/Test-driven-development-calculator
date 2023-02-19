@@ -22,15 +22,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * @Author: Honorine Lima
  * username:holi1900
  * Course: DT042G
- * version: 1
+ * Date: 2023-02-19
  *
- *
- * This class is a calculator class that takes a mathematical expression in the from of a string,
- * checks if it is a valid mathematical expression and
- * if it is valid, it computes the expression according to order of operator precedence
- *  that is  brackets, exponent, division, multiplacation, addition, subtraction and returns the answer
- * if the expression is not a valid expression, it returns the expression without white spaces
- *
+ * This class contains test methods for the a Lab2 class
+ * This class contains test for all methods in Lab2 class as well as integrity
+ * test for class design which test that all class fields and methods exist
  */
 public class Lab2Test {
     /**
@@ -57,9 +53,11 @@ public class Lab2Test {
     @Test
     void testPerformAdditionAndSubtractionWithOnlySubtractionInInput(){
         var expression1 = new Lab2("14-11");
-        assertEquals("3", expression1.performAdditionAndSubtraction());
+        expression1.performAdditionAndSubtraction();
+        assertEquals("3", expression1.getExpression());
         var expression2 = new Lab2("-3-5-4");
-        assertEquals("-12", expression2.performAdditionAndSubtraction());
+        expression2.performAdditionAndSubtraction();
+        assertEquals("-12", expression2.getExpression());
     }
 
     /**
@@ -69,9 +67,11 @@ public class Lab2Test {
     @Test
     void testPerformAdditionAndSubtractionWithOnlyAdditionInInput(){
         var expression1 = new Lab2("5+8");
-        assertEquals("13", expression1.performAdditionAndSubtraction());
+        expression1.performAdditionAndSubtraction();
+        assertEquals("13", expression1.getExpression());
         var expression2 = new Lab2("-3+4+5+1");
-        assertEquals("7", expression2.performAdditionAndSubtraction());
+        expression2.performAdditionAndSubtraction();
+        assertEquals("7", expression2.getExpression());
     }
 
     /**
@@ -81,9 +81,11 @@ public class Lab2Test {
     @Test
     void testPerformAdditionAndSubtractionInInput(){
         var expression1 = new Lab2("3+3-4");
-        assertEquals("2", expression1.performAdditionAndSubtraction());
+        expression1.performAdditionAndSubtraction();
+        assertEquals("2", expression1.getExpression());
         var expression2 = new Lab2("-3-4+5+1");
-        assertEquals("-1", expression2.performAdditionAndSubtraction());
+        expression2.performAdditionAndSubtraction();
+        assertEquals("-1", expression2.getExpression());
     }
 
 
@@ -117,11 +119,14 @@ public class Lab2Test {
     @Test
     public void testPerformMultiplicationAndDivisionWithOnlyMultiplication(){
         var expression1 = new Lab2("4*5");
-        assertEquals("20", expression1.performMultiplicationAndDivision());
+        expression1.performMultiplicationAndDivision();
+        assertEquals("20", expression1.getExpression());
         var expression2 = new Lab2("-5*5");
-        assertEquals("-25", expression2.performMultiplicationAndDivision());
+        expression2.performMultiplicationAndDivision();
+        assertEquals("-25", expression2.getExpression());
         var expression3 = new Lab2("-5*5+4*5");
-        assertEquals("-25+20", expression3.performMultiplicationAndDivision());
+        expression3.performMultiplicationAndDivision();
+        assertEquals("-25+20", expression3.getExpression());
 
     }
 
@@ -132,9 +137,11 @@ public class Lab2Test {
     @Test
     public void testPerformMultiplicationAndDivisionWithOnlyDivision(){
         var expression1 = new Lab2("-4/4");
-        assertEquals("-1", expression1.performMultiplicationAndDivision());
+        expression1.performMultiplicationAndDivision();
+        assertEquals("-1", expression1.getExpression());
         var expression2 = new Lab2("4/5-2/1");
-        assertEquals("1-2", expression2.performMultiplicationAndDivision());
+        expression2.performMultiplicationAndDivision();
+        assertEquals("1-2", expression2.getExpression());
     }
 
     /**
@@ -144,7 +151,8 @@ public class Lab2Test {
     @Test
     public void testPerformMultiplicationAndDivisionWithDivisionFirst(){
         var expression1 = new Lab2("-4/4*2");
-        assertEquals("-2", expression1.performMultiplicationAndDivision());
+        expression1.performMultiplicationAndDivision();
+        assertEquals("-2", expression1.getExpression());
     }
 
     /**
@@ -154,9 +162,11 @@ public class Lab2Test {
     @Test
     public void testPerformMultiplicationAndDivisionWithMultiplicationFirst(){
         var expression1 = new Lab2("-4/4");
-        assertEquals("-1", expression1.performMultiplicationAndDivision());
+        expression1.performMultiplicationAndDivision();
+        assertEquals("-1", expression1.getExpression());
         var expression2 = new Lab2("4/5-2/1");
-        assertEquals("1-2", expression2.performMultiplicationAndDivision());
+        expression2.performMultiplicationAndDivision();
+        assertEquals("1-2", expression2.getExpression());
     }
 
     /**
@@ -174,9 +184,11 @@ public class Lab2Test {
     @Test
     public void testPerformAllExponentsInInput(){
         var expression1 = new Lab2("-4+4^2");
-        assertEquals("-4+16", expression1.performAllExponentsInInput());
+        expression1.performAllExponentsInInput();
+        assertEquals("-4+16", expression1.getExpression());
         var expression2 = new Lab2("5^3-2^4");
-        assertEquals("125-16", expression2.performAllExponentsInInput());
+        expression2.performAllExponentsInInput();
+        assertEquals("125-16", expression2.getExpression());
     }
 
     /**
@@ -194,9 +206,11 @@ public class Lab2Test {
     @Test
     public void testResolveBracketsInInput(){
         var expression1 = new Lab2("3-5+4-1");
-        assertEquals("3-5+4-1", expression1.resolveBracketsInInput());
+        expression1.resolveBracketsInInput();
+        assertEquals("3-5+4-1", expression1.getExpression());
         var expression2 = new Lab2("3-(5-4)-1");
-        assertEquals("3-1-1", expression2.resolveBracketsInInput());
+        expression2.resolveBracketsInInput();
+        assertEquals("3-1-1", expression2.getExpression());
 
     }
 

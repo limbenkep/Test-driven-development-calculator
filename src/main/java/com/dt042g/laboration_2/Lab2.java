@@ -19,7 +19,7 @@ import java.util.Objects;
  * if the expression is not a valid expression, it returns the expression without white spaces
  */
 public class Lab2 {
-    String expression;// Expression to be solved
+    private String expression;// Expression to be solved
 
     /**
      * Constructor takes the expression to be computed and initialize expression field
@@ -30,11 +30,19 @@ public class Lab2 {
     }
 
     /**
+     * gets expression
+     * @return the value of the expression field
+     */
+    public String getExpression() {
+        return expression;
+    }
+
+    /**
      * Computes all addition and subtraction in the order they come in
      * and replace the resolves parts of the expression with their answers
      * @return expression after all additions and subtractions have been computed
      */
-    public String performAdditionAndSubtraction() {
+    public void performAdditionAndSubtraction() {
         while(expression.contains("+") || expression.contains("-")){
             if(!expression.contains("+") && expression.lastIndexOf("-") == 0){
                 break;
@@ -55,7 +63,6 @@ public class Lab2 {
                 }
             }
         }
-        return expression;
     }
 
     /**
@@ -63,7 +70,7 @@ public class Lab2 {
      * and replace the resolves parts of the expression with their answers
      * @return the reduced expression after all multiplication and division have been computed
      */
-    public String performMultiplicationAndDivision() {
+    public void performMultiplicationAndDivision() {
         while(expression.contains("/") || expression.contains("*")){
             String tempExp = addSpaceAroundOperatorsInInput(expression);
             String[] expComp = tempExp.split("\\s");
@@ -81,7 +88,6 @@ public class Lab2 {
                 }
             }
         }
-        return expression;
     }
 
     /**
@@ -94,23 +100,21 @@ public class Lab2 {
      * @return the reduced expression with all exponents computed.
      */
 
-    public String performAllExponentsInInput() {
+    public void performAllExponentsInInput() {
         String sign = "^";
         String regex = "[+*-/]";
-        if(!expression.contains(sign)){
-            return expression;
-        }
-        String resultString = expression;
-        String[] subExpressions = expression.split(regex);
-        for (String subExp : subExpressions) {
-            if (subExp.contains(sign)) {
-                List<String> numberStrings = Arrays.asList(subExp.split("\\^"));
-                int result = (int) Math.pow(Integer.parseInt(numberStrings.get(0)), Integer.parseInt(numberStrings.get(1)));
-                String resultStr = "" + result;
-                resultString = resultString.replace(subExp, resultStr);
+        if(expression.contains(sign)){
+            String resultString = expression;
+            String[] subExpressions = expression.split(regex);
+            for (String subExp : subExpressions) {
+                if (subExp.contains(sign)) {
+                    List<String> numberStrings = Arrays.asList(subExp.split("\\^"));
+                    long result = (long) Math.pow(Integer.parseInt(numberStrings.get(0)), Integer.parseInt(numberStrings.get(1)));
+                    String resultStr = "" + result;
+                    expression = expression.replace(subExp, resultStr);
+                }
             }
         }
-        return resultString;
     }
 
     /**
@@ -118,7 +122,7 @@ public class Lab2 {
      * with their answers
      * @return the reduced expression after all brackets have been computed
      */
-    public String resolveBracketsInInput() {
+    public void resolveBracketsInInput() {
         //repeat this until all brackets are resolved
         while(expression.contains("(")){
             //Get the indices of the open and close brackets
@@ -127,17 +131,17 @@ public class Lab2 {
             //get a copy of the expression withing the bracket
             String brackeString = expression.substring(startIndex, endIndex);
             // assign the expression in the bracket to input and compute input
-            String result;
             Lab2 subExp = new Lab2(brackeString);
-            result = subExp.performAllExponentsInInput();
-            result = subExp.performMultiplicationAndDivision();
-            result = subExp.performAdditionAndSubtraction();
+            subExp.performAllExponentsInInput();
+            subExp.performMultiplicationAndDivision();
+            subExp.performAdditionAndSubtraction();
+            String result = subExp.getExpression();
             //replace the brackets, and it's content in the copy of the original Input
             //with the current value of input which is the answer to the expression in brackets
             //assign the edited original input to input
             expression = expression.replace("(" + brackeString + ")", result);
         }
-        return expression;
+
     }
 
     /**
@@ -157,13 +161,13 @@ public class Lab2 {
             return expression;
         }
         //compute all expressions in brackets
-        expression = resolveBracketsInInput();
+        resolveBracketsInInput();
         //compute all exponents
-        expression = performAllExponentsInInput();
+        performAllExponentsInInput();
         //compute all divisions
-        expression = performMultiplicationAndDivision();
+        performMultiplicationAndDivision();
         //compute all multiplications
-        expression = performAdditionAndSubtraction();
+        performAdditionAndSubtraction();
         return expression;
     }
 
