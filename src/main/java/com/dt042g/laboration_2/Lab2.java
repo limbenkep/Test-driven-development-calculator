@@ -5,11 +5,178 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author: Honorine Lima
+ * username:holi1900
+ * Course: DT042G
+ * Date: 2023-02-19
+ * This class is a calculator class that takes a mathematical expression as a string
+ * passed as an argument in command line, parse the expression, compute in order of
+ * operator precedence and print the answer on the console.
+ * If the expression is a valid mathematical expression the expression computed according
+ * to order of operator precedence whereby brackets comes first, exponent second, division
+ * and multiplication third, and addition and subtraction comes last
+ * if the expression is not a valid expression, it returns the expression without white spaces
+ */
 public class Lab2 {
-    String expression;
+    String expression;// Expression to be solved
 
+    /**
+     * Constructor takes the expression to be computed and initialize expression field
+     * @param expression expression to be computed as string
+     */
     public Lab2(String expression) {
         this.expression = expression;
+    }
+
+    /**
+     * Computes all addition and subtraction in the order they come in
+     * and replace the resolves parts of the expression with their answers
+     * @return expression after all additions and subtractions have been computed
+     */
+    public String performAdditionAndSubtraction() {
+        while(expression.contains("+") || expression.contains("-")){
+            if(!expression.contains("+") && expression.lastIndexOf("-") == 0){
+                break;
+            }
+            String tempExp = addSpaceAroundOperatorsInInput(expression);
+            String[] expComp = tempExp.split("\\s");
+            for(int i = 0; i< expComp.length; i++){
+                if(Objects.equals(expComp[i], "+")){
+                    int ans = Integer.parseInt(expComp[i-1]) + Integer.parseInt(expComp[i+1]);
+                    String subExp  =expComp[i-1] + expComp[i] + expComp[i+1];
+                    expression = expression.replace(subExp, "" + ans);
+                    break;
+                } else if (Objects.equals(expComp[i], "-")) {
+                    int ans = Integer.parseInt(expComp[i-1]) - Integer.parseInt(expComp[i+1]);
+                    String subExp  = expComp[i-1] + expComp[i] + expComp[i+1];
+                    expression = expression.replace(subExp, "" + ans);
+                    break;
+                }
+            }
+        }
+        return expression;
+    }
+
+    /**
+     * Computes all multiplication and division in the order they come in.
+     * and replace the resolves parts of the expression with their answers
+     * @return the reduced expression after all multiplication and division have been computed
+     */
+    public String performMultiplicationAndDivision() {
+        while(expression.contains("/") || expression.contains("*")){
+            String tempExp = addSpaceAroundOperatorsInInput(expression);
+            String[] expComp = tempExp.split("\\s");
+            for(int i = 0; i< expComp.length; i++){
+                if(Objects.equals(expComp[i], "/")){
+                    long ans = Math.round(Double.parseDouble(expComp[i-1]) / Double.parseDouble(expComp[i+1]));
+                    String subExp  =expComp[i-1] + expComp[i] + expComp[i+1];
+                    expression = expression.replace(subExp, "" + ans);
+                    break;
+                } else if (Objects.equals(expComp[i], "*")) {
+                    long ans = Long.parseLong(expComp[i-1]) * Long.parseLong(expComp[i+1]);
+                    String subExp  = expComp[i-1] + expComp[i] + expComp[i+1];
+                    expression = expression.replace(subExp, "" + ans);
+                    break;
+                }
+            }
+        }
+        return expression;
+    }
+
+    /**
+     * This function resolves all exponents in the input expression
+     * and replace the resolved parts with the solution
+     * This function is meant to be used for solving equations in
+     * order of operator precedence
+     * it is assumed that input does not contain brackets but may contain ^,/,*,+,-
+     * Replace the resolves parts of the expression with their answers
+     * @return the reduced expression with all exponents computed.
+     */
+
+    public String performAllExponentsInInput() {
+        String sign = "^";
+        String regex = "[+*-/]";
+        if(!expression.contains(sign)){
+            return expression;
+        }
+        String resultString = expression;
+        String[] subExpressions = expression.split(regex);
+        for (String subExp : subExpressions) {
+            if (subExp.contains(sign)) {
+                List<String> numberStrings = Arrays.asList(subExp.split("\\^"));
+                int result = (int) Math.pow(Integer.parseInt(numberStrings.get(0)), Integer.parseInt(numberStrings.get(1)));
+                String resultStr = "" + result;
+                resultString = resultString.replace(subExp, resultStr);
+            }
+        }
+        return resultString;
+    }
+
+    /**
+     * Computes all expression within brackets and replace the resolves parts of the expression
+     * with their answers
+     * @return the reduced expression after all brackets have been computed
+     */
+    public String resolveBracketsInInput() {
+        //repeat this until all brackets are resolved
+        while(expression.contains("(")){
+            //Get the indices of the open and close brackets
+            int startIndex = expression.indexOf("(") + 1;
+            int endIndex = expression.indexOf(")");
+            //get a copy of the expression withing the bracket
+            String brackeString = expression.substring(startIndex, endIndex);
+            // assign the expression in the bracket to input and compute input
+            String result;
+            Lab2 subExp = new Lab2(brackeString);
+            result = subExp.performAllExponentsInInput();
+            result = subExp.performMultiplicationAndDivision();
+            result = subExp.performAdditionAndSubtraction();
+            //replace the brackets, and it's content in the copy of the original Input
+            //with the current value of input which is the answer to the expression in brackets
+            //assign the edited original input to input
+            expression = expression.replace("(" + brackeString + ")", result);
+        }
+        return expression;
+    }
+
+    /**
+     * removes all spaces in a string
+     * @return string without spaces
+     */
+    public static String removeSpacesInString(String string){
+        return string.replaceAll("\\s","");
+    }
+
+    public String computeInput() {
+        System.out.println("Expression: " + expression);
+        //remove spaces from expression
+        expression = removeSpacesInString(expression);
+        if(!validateInput()){
+            System.out.println("invalid input");
+            return expression;
+        }
+        //compute all expressions in brackets
+        expression = resolveBracketsInInput();
+        //compute all exponents
+        expression = performAllExponentsInInput();
+        //compute all divisions
+        expression = performMultiplicationAndDivision();
+        //compute all multiplications
+        expression = performAdditionAndSubtraction();
+        return expression;
+    }
+
+    /**
+     * checks that input is a valid mathematical expression
+     * @return true is valid else false
+     */
+    public boolean validateInput(){
+        return !expression.isEmpty()
+                && inputContainsOperator(expression)
+                && validateCharactersInInput(expression)
+                && validateProperUseOfBrackets(expression)
+                && validateOperatorPosition(expression);
     }
 
     /**
@@ -40,132 +207,6 @@ public class Lab2 {
     }
 
     /**
-     * While the expression contains "-" of "+"
-     * @return
-     */
-    public String performAdditionAndSubtraction() {
-        while(expression.contains("+") || expression.contains("-")){
-            if(!expression.contains("+") && expression.lastIndexOf("-") == 0){
-                break;
-            }
-            String tempExp = addSpaceAroundOperatorsInInput(expression);
-            String[] expComp = tempExp.split("\\s");
-            for(int i = 0; i< expComp.length; i++){
-                if(Objects.equals(expComp[i], "+")){
-                    int ans = Integer.parseInt(expComp[i-1]) + Integer.parseInt(expComp[i+1]);
-                    String subExp  =expComp[i-1] + expComp[i] + expComp[i+1];
-                    expression = expression.replace(subExp, "" + ans);
-                    break;
-                } else if (Objects.equals(expComp[i], "-")) {
-                    int ans = Integer.parseInt(expComp[i-1]) - Integer.parseInt(expComp[i+1]);
-                    String subExp  = expComp[i-1] + expComp[i] + expComp[i+1];
-                    expression = expression.replace(subExp, "" + ans);
-                    break;
-                }
-            }
-        }
-        return expression;
-    }
-
-    public String performMultiplicationAndDivision() {
-        while(expression.contains("/") || expression.contains("*")){
-            String tempExp = addSpaceAroundOperatorsInInput(expression);
-            String[] expComp = tempExp.split("\\s");
-            for(int i = 0; i< expComp.length; i++){
-                if(Objects.equals(expComp[i], "/")){
-                    int ans = Integer.parseInt(expComp[i-1]) / Integer.parseInt(expComp[i+1]);
-                    String subExp  =expComp[i-1] + expComp[i] + expComp[i+1];
-                    expression = expression.replace(subExp, "" + ans);
-                    break;
-                } else if (Objects.equals(expComp[i], "*")) {
-                    int ans = Integer.parseInt(expComp[i-1]) * Integer.parseInt(expComp[i+1]);
-                    String subExp  = expComp[i-1] + expComp[i] + expComp[i+1];
-                    expression = expression.replace(subExp, "" + ans);
-                    break;
-                }
-            }
-        }
-        return expression;
-    }
-
-    /**
-     * This function resolves all exponents in the input expression
-     * and replace the resolved parts with the solution
-     * This function is meant to be used for solving equations in
-     * order of operator precedence
-     * it is assumed that input does not contain brackets but may contain ^,/,*,+,-
-     * @return a reduces math expression with all exponents computed.
-     */
-
-    public String performAllExponentsInInput() {
-        String sign = "^";
-        String regex = "[\\+\\*-/]";
-        if(!expression.contains(sign)){
-            return expression;
-        }
-        String resultString = expression;
-        String[] subExpressions = expression.split(regex);
-        for (String subExp : subExpressions) {
-            if (subExp.contains(sign)) {
-                List<String> numberStrings = Arrays.asList(subExp.split("\\^"));
-                int result = (int) Math.pow(Integer.parseInt(numberStrings.get(0)), Integer.parseInt(numberStrings.get(1)));
-                String resultStr = "" + result;
-                resultString = resultString.replace(subExp, resultStr);
-            }
-        }
-        return resultString;
-    }
-
-    public String resolveBracketsInInput() {
-        //repeat this until all brackets are resolved
-        while(expression.contains("(")){
-            //Get the indices of the open and close brackets
-            int startIndex = expression.indexOf("(") + 1;
-            int endIndex = expression.indexOf(")");
-            //get a copy of the expression withing the bracket
-            String brackeString = expression.substring(startIndex, endIndex);
-            // assign the expression in the bracket to input and compute input
-            String result = brackeString;
-            Lab2 subExp = new Lab2(brackeString);
-            result = subExp.performAllExponentsInInput();
-            result = subExp.performMultiplicationAndDivision();
-            result = subExp.performAdditionAndSubtraction();
-            //replace the brackets and it's content in the copy of the original Input
-            //with the current value of input which is the answer to the expression in brackets
-            //assign the edited original input to input
-            expression = expression.replace("(" + brackeString + ")", result);
-        }
-        return expression;
-    }
-
-    /**
-     * removes all spaces in a string
-     * @return string without spaces
-     */
-    public static String removeSpacesInString(String string){
-        return string.replaceAll("\\s","");
-    }
-
-    public String computeInput() {
-        System.out.println("Expression: " + expression);
-        //remove spaces from expression
-        expression = removeSpacesInString(expression);
-        if(!validateInput()){
-            System.out.println("invalid input");
-            return "Invalid input";
-        }
-        //compute all expressions in brackets
-        expression = resolveBracketsInInput();
-        //compute all exponents
-        expression = performAllExponentsInInput();
-        //compute all divisions
-        expression = performMultiplicationAndDivision();
-        //compute all multiplications
-        expression = performAdditionAndSubtraction();
-        return expression;
-    }
-
-    /**
      * checks in a character is a number by check if the character can be parsed to an int
      * @param s character to be checked
      * @return true if charater is a number else false
@@ -187,11 +228,8 @@ public class Lab2 {
      */
     public static boolean isAnOperator(char character) {
 
-        if (character == '*' || character == '/'|| character
-                == '+' || character == '-' || character == '^') {
-            return true;
-        }
-        return false;
+        return character == '*' || character == '/' || character
+                == '+' || character == '-' || character == '^';
     }
 
     /**
@@ -200,14 +238,11 @@ public class Lab2 {
      * @return true if it is a bracket else false
      */
     public static boolean isABracket(char character){
-        if (character == '(' || character == ')') {
-            return true;
-        }
-        return false;
+        return character == '(' || character == ')';
     }
     /**
      * checks if expression contains only that is only numbers, operators and brackets
-     * @return
+     * @return true if all characters are valid else false
      */
     public static boolean validateCharactersInInput(String input){
         for(int i= 0; i<input.length(); i++){
@@ -226,21 +261,15 @@ public class Lab2 {
      * @return index of the operator or -1
      */
     public static boolean inputContainsOperator(String input) {
-        if(input.contains("+")
+        return input.contains("+")
                 || input.contains("-")
                 || input.contains("/")
                 || input.contains("*")
-                || input.contains("^")){
-            return true;
-        }
-        return false;
+                || input.contains("^");
     }
 
     public static boolean inputContainsBrackets(String input) {
-        if(input.contains("(") || input.indexOf(")") != -1){
-            return true;
-        }
-        return false;
+        return input.contains("(") || input.contains(")");
     }
 
     public static boolean validateProperUseOfBrackets(String input) {
@@ -289,11 +318,11 @@ public class Lab2 {
     }
 
     /**
-     * checks for correct use of operators. The oparator should not occur
+     * checks for correct use of operators. The operator should not occur
      * at the begining of an expression unless it is a '-' sign for negative numbers
      * an operator should not be directly followed by another operator
      * an operator should not be used at the end of the expression
-     * @return
+     * @return true if operators are used correctly else false
      */
     public static boolean validateOperatorPosition(String input) {
         int inputLength = input.length();
@@ -318,24 +347,17 @@ public class Lab2 {
         return true;
     }
 
-    /**
-     * checks that input is a valid mathemathical expression
-     * @return
-     */
-    public boolean validateInput(){
-        if(expression.isEmpty()
-                || !inputContainsOperator(expression)
-                || !validateCharactersInInput(expression)
-                || !validateProperUseOfBrackets(expression)
-                || !validateOperatorPosition(expression)){
-            return false;
-        }
-        return true;
-    }
+
 
     static public void main(String... args) {
+        if(args.length>0){
+            String expression = args[0];
+            Lab2 lab2 = new Lab2(expression);
+            String result = lab2.computeInput();
+            System.out.println(expression + " = " + result);
+        }else {
+            System.out.println("No expression was provided");
+        }
 
-        System.out.println("Laboration 2");
     }
-
 }
