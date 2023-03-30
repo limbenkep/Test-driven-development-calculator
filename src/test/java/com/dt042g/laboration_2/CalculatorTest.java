@@ -20,10 +20,16 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * This class contains unit test for the Calculator class.
+ * @Author: Honorine Lima
+ * username:holi1900
+ * Course: DT042G
+ * Date: 2023-03-30
+ */
 class CalculatorTest {
     /**
-     * test the class design integrity by testing that the Calculator
+     * Test the class design integrity by testing that the Calculator
      * class package name is "Calculator"
      */
     @Test
@@ -217,7 +223,7 @@ class CalculatorTest {
     }
     /**
      * Test that the method getFirstRegexMatch that when the passed expression does not have any match
-     * Should return an empty optional which through a NoSuchElementException whenthe get() method is called on it.
+     * Should return an empty optional which through a NoSuchElementException when the get() method is called on it.
      */
     @Test
     void testGetFirstRegexMatchMatchNotFound(){
@@ -339,7 +345,7 @@ class CalculatorTest {
     /**
      * Test the string used as regex pattern to match exponent parts of the expression
      * in an expression with no match
-     * Should return return empty optional
+     * Should return empty optional
      */
     @Test
     void testExponentRegexNotFound(){
@@ -437,7 +443,7 @@ class CalculatorTest {
     }
 
     /**
-     * Test the method isValidExpression with a invalid expression containing letter.
+     * Test the method isValidExpression with an invalid expression containing letter.
      * The method checks if the passed expression is a valid mathematical expression.
      * Should return False.
      */
@@ -448,7 +454,7 @@ class CalculatorTest {
     }
 
     /**
-     * Test the method isValidExpression with a invalid expression containing no operators.
+     * Test the method isValidExpression with an invalid expression containing no operators.
      * The method checks if the passed expression is a valid mathematical expression.
      * Should return False.
      */
@@ -459,7 +465,7 @@ class CalculatorTest {
     }
 
     /**
-     * Test the method isValidExpression with a invalid expression containing nested brackets.
+     * Test the method isValidExpression with an invalid expression containing nested brackets.
      * The method checks if the passed expression is a valid mathematical expression.
      * Should return False.
      */
@@ -470,7 +476,7 @@ class CalculatorTest {
     }
 
     /**
-     * Test the method isValidExpression with a invalid expression containing unclosed.
+     * Test the method isValidExpression with an invalid expression containing unclosed.
      * The method checks if the passed expression is a valid mathematical expression.
      * Should return False.
      */
@@ -480,7 +486,7 @@ class CalculatorTest {
         assertFalse(calculator.isValidExpression("(3^3/2^2-2+4*3"));
     }
     /**
-     * Test the method isValidExpression with a invalid expression containing unclosed.
+     * Test the method isValidExpression with an invalid expression containing unclosed.
      * The method checks if the passed expression is a valid mathematical expression.
      * Should return False.
      */
@@ -490,7 +496,7 @@ class CalculatorTest {
         assertFalse(calculator.isValidExpression("3^3/2^2-2+4)*3"));
     }
     /**
-     * Test the method isValidExpression with a invalid expression containing no operators.
+     * Test the method isValidExpression with an invalid expression containing no operators.
      * The method checks if the passed expression is a valid mathematical expression.
      * Should return False.
      */
@@ -500,7 +506,7 @@ class CalculatorTest {
         assertFalse(calculator.isValidExpression("3(2+4)*3"));
     }
     /**
-     * Test the method isValidExpression with a invalid expression containing no operators.
+     * Test the method isValidExpression with an invalid expression containing no operators.
      * The method checks if the passed expression is a valid mathematical expression.
      * Should return False.
      */
@@ -510,7 +516,7 @@ class CalculatorTest {
         assertFalse(calculator.isValidExpression("3*(2+4)3"));
     }
     /**
-     * Test the method isValidExpression with a invalid expression containing improper use of operators
+     * Test the method isValidExpression with an invalid expression containing improper use of operators
      * The method checks if the passed expression is a valid mathematical expression.
      * Should return False.
      */

@@ -65,12 +65,24 @@ Validations where then made to ensure that the expression was a valid expression
 of operator and use of bracket. Static methods where used for parts of the validations and all methods started with a 
 test and then the implementation. The validation was then added to the method that computes the whole expression such that
 the method returns the expression unchanged and print "Invalid expression" if the expression is invalid. 
-Finally the code was refactored and the comments were written for uncommented codes and the report was written.
+Finally, the code was refactored and the comments were written for uncommented codes and the report was written.
 
-# Discussion
+## Discussion
 The purpose of this lab was accomplished and all the expressions from the provide expression.json file yielded the 
 correct result. All code that was implemented in the Lab2 class started with a test from the Lab2Test class as stipulated by 
 the TDD. The program meets the requirements of the lab but does not work as a proper calculator. For example it does not 
 work if the answer for part of the expression was negative. But from the provided examples this was not included in the lab.
 I chose to work with the expression as a string because i found it easier to replace parts of the string with their answers.
 Overall, I believe the exercise was a good training for TDD and reflection and introspection.
+
+## Version 2
+Based on the feedback received from the first submissions,  the implementation for the Calculator has been isolated to a 
+separate  class, Calculator, with a separate test class, CalculatorTest. The implementation was also refactored to use 
+regular expression in parsing the expression and Stream API. Different regular expression patterns were developed, one  
+for addition and subtraction, one for multiplication and division, one for exponent, one for bracket and one for valid 
+mathematical expression. These regex were used to validate the passed expression and extracts parts of the expression 
+to be evaluated according to operator precedence.
+This version also fixes the bug that caused strange results with division by zero. When this happens 'Undefined' 
+is returned and a message is also printed that states that 'Division by zero is undefined!'. Float was also used 
+instead of integers to allow handling of decimals.
+This version also include both behavioral test and integrity test for class design.

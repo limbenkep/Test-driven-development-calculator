@@ -6,6 +6,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+/**
+ *  This class is a calculator class whose compute method takes a mathematical expression as a string
+ *  parse the expression, compute in order of operator precedence and return the answer as a string.
+ *  The class also  has methods that validate the passed expression, remove white spaces,
+ *  perform the different operation and format the results. All these are used in the compute
+ *  method to compute the expression. Computation is done in order of operator precedence whereby
+ *  brackets comes first, exponent second, division and multiplication third, and addition and subtraction comes last
+ *  if the expression is not a valid expression, the message with invalid expression is returned.
+ */
 public class Calculator {
     protected final String additionOrSubtractionRegex = "((-?\\d+(\\.\\d+)?-\\d+(\\.\\d+)?)|(-?\\d+(\\.\\d+)?\\+-?\\d+(\\.\\d+)?))";
     protected final String multiplicationOrDivisionRegex = "((\\d+(\\.\\d+)?\\*-?\\d+(\\.\\d+)?)|(\\d+(\\.\\d+)?/-?\\d+(\\.\\d+)?))";
@@ -29,8 +38,8 @@ public class Calculator {
         return Optional.ofNullable(matcher.group());
     }
     /**
-     * Computes addition in a string expression made of two numbers seperated a addition sign.
-     * @param expression string expression made of two numbers seperated by a addition sign
+     * Computes addition in a string expression made of two numbers seperated an addition sign.
+     * @param expression string expression made of two numbers seperated by an addition sign
      * @return the result of the addition as a string
      */
     protected String performAdditionBetweenTwoNumbers(String expression){
@@ -195,9 +204,9 @@ public class Calculator {
     /**
      * Called after to any part of the expression has been computed to
      * take care to computation that result in negative numbers.
-     * Replaces '--' with '+' and '+-' with '-' if present in the passed expression
+     * Replaces '--' with '+' and '+-' with '-' if present in the expression
      * @param expression math expression
-     * @return
+     * @return formatted expression
      */
     protected String formatSignOperators(String expression){
         expression = expression.replaceAll("\\+-", "-");

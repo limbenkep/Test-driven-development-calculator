@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Modifier;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -28,5 +29,37 @@ import static org.junit.jupiter.api.Assertions.*;
  * test for class design which test that all class fields and methods exist
  */
 public class Lab2Test {
+    /**
+     * test the class design integrity by testing that the Lab2
+     * class package name is "com.dt042g.laboration_2"
+     */
+    @Test
+    void testLab2ClassPackageName() {
+        assertEquals("com.dt042g.laboration_2", Lab2.class.getPackageName());
+    }
+    /**
+     * Test the class design integrity by testing that the Lab2
+     * class simple name is "Lab2"
+     */
+    @Test
+    void testLab2ClassSimpleName() {
 
+        assertEquals("Lab2", Lab2.class.getSimpleName());
+    }
+
+    /**
+     * test the class design integrity by testing that the Lab2
+     * class name is "com.dt042g.laboration_2.Lab2"
+     */
+    @Test
+    void testLab2ClassName() {
+        assertEquals("com.dt042g.laboration_2.Lab2", Lab2.class.getName());
+    }
+    /**
+     * Test the class design integrity by testing that the Lab2 class is public
+     */
+    @Test
+    void testLab2ClassIsPublic() throws ClassNotFoundException {
+        assertTrue(Modifier.isPublic(Class.forName("com.dt042g.laboration_2.Lab2").getModifiers()));
+    }
 }

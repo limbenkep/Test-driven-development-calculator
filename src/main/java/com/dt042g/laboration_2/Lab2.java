@@ -1,24 +1,22 @@
 package com.dt042g.laboration_2;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
 /**
+ * This program is a calculator that compute mathematical expression passed as a string and print the result.
+ * The class is a utility class that acts as the main point for execution.
+ * The expression is passed as by commandline, parser and computed and the result is printed to console.
+ * The computation is done by the Calculator class.
  * @author: Honorine Lima
  * username:holi1900
  * Course: DT042G
  * Date: 2023-02-19
- * This class is a calculator class that takes a mathematical expression as a string
- * passed as an argument in command line, parse the expression, compute in order of
- * operator precedence and print the answer on the console.
- * If the expression is a valid mathematical expression the expression computed according
- * to order of operator precedence whereby brackets comes first, exponent second, division
- * and multiplication third, and addition and subtraction comes last
- * if the expression is not a valid expression, it returns the expression without white spaces
  */
 public class Lab2 {
+    /**
+     * Receive argument array and check if array contains an expression. If yes, the calculator
+     * method compute() is called to compute the expression and the result is printed to console.
+     * If the argument array is empty, a message is printed to notify user that no expression was passed.
+     * @param args passed expression
+     */
     static public void main(String... args) {
         if(args.length>0){
             String expression = args[0];
