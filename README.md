@@ -73,4 +73,4 @@ correct result. All code that was implemented in the Lab2 class started with a t
 the TDD. The program meets the requirements of the lab but does not work as a proper calculator. For example it does not 
 work if the answer for part of the expression was negative. But from the provided examples this was not included in the lab.
 I chose to work with the expression as a string because i found it easier to replace parts of the string with their answers.
-Overall, I believe the exercise was a good training for TDD and reflection nd introspection.
+Overall, I believe the exercise was a good training for TDD and reflection and introspection.
