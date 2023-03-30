@@ -11,7 +11,7 @@ public class Calculator {
     protected final String multiplicationOrDivisionRegex = "((\\d+(\\.\\d+)?\\*-?\\d+(\\.\\d+)?)|(\\d+(\\.\\d+)?/-?\\d+(\\.\\d+)?))";
     protected final String posNrExponentRegex = "\\d+(\\.\\d+)?\\^-?\\d+(\\.\\d+)?";
     protected final String bracketRegex = "\\(-?\\d+(\\.\\d+)?([\\^*/\\-+]-?\\d+(\\.\\d+)?)+\\)";
-    protected final String validExpressionRegex = "-?\\d+(\\.\\d+)?([\\^*/\\-+]((-?\\d+(\\.\\d+)?)|(\\(-?\\d+(\\.\\d+)?([\\^*/\\-+]-?\\d+(\\.\\d+)?)+\\))))+";
+    protected final String validExpressionRegex = "((-?\\d+(\\.\\d+)?)|(\\(-?\\d+(\\.\\d+)?([\\^*/\\-+]-?\\d+(\\.\\d+)?)+\\)))([\\^*/\\-+]((-?\\d+(\\.\\d+)?)|(\\(-?\\d+(\\.\\d+)?([\\^*/\\-+]-?\\d+(\\.\\d+)?)+\\))))+";
     protected final String undefined = "Undefined";
 
     /**
@@ -20,7 +20,7 @@ public class Calculator {
      * @param regex regex string to be matched
      * @return an optional holding the first match if found or null if not found
      */
-    public Optional<String> getFirstRegexMatch(String expression, String regex){
+    protected Optional<String> getFirstRegexMatch(String expression, String regex){
         Matcher matcher = Pattern.compile(regex)
                 .matcher(expression);
         if(!matcher.find()){
@@ -33,7 +33,7 @@ public class Calculator {
      * @param expression string expression made of two numbers seperated by a addition sign
      * @return the result of the addition as a string
      */
-    public String performAdditionBetweenTwoNumbers(String expression){
+    protected String performAdditionBetweenTwoNumbers(String expression){
         return String.valueOf(Arrays.stream(expression.split("\\+"))
                 .map(Float::parseFloat)
                 .reduce(0f, Float::sum));
@@ -44,7 +44,7 @@ public class Calculator {
      * @param expression string expression made of two numbers seperated by a subtraction sign
      * @return the result of the subtraction as a string
      */
-    public String performSubtractionBetweenTwoNumbers(String expression){
+    protected String performSubtractionBetweenTwoNumbers(String expression){
         return Stream.of(expression)
                 .map(s->s.split("-"))
                 .map(a->new Float[]{Float.parseFloat(a[0]), Float.parseFloat(a[1])})
@@ -58,7 +58,7 @@ public class Calculator {
      * @param expression string expression made of two numbers seperated by a multiplication sign
      * @return the result of the multiplication as a string
      */
-    public String performMultiplicationBetweenTwoNumbers(String expression){
+    protected String performMultiplicationBetweenTwoNumbers(String expression){
         return String.valueOf(Arrays.stream(expression.split("\\*"))
                 .map(Float::parseFloat)
                 .reduce(1f, (acc, val)->acc*val));
@@ -69,7 +69,7 @@ public class Calculator {
      * @param expression string expression made of two numbers seperated by a division sign
      * @return the result of the division as a string
      */
-    public String performDivisionBetweenTwoNumbers(String expression){
+    protected String performDivisionBetweenTwoNumbers(String expression){
         String[] list = expression.split("/");
         float val1 = Float.parseFloat(list[0]);
         float val2 = Float.parseFloat(list[1]);
@@ -85,7 +85,7 @@ public class Calculator {
      * @param expression string expression made of two numbers seperated by a power sign
      * @return the result of the power as a string
      */
-    public String performPowerOfBetweenTwoNumbers(String expression){
+    protected String performPowerOfBetweenTwoNumbers(String expression){
         return Stream.of(expression)
                 .map(s -> s.split("\\^"))
                 .map(a -> Math.pow(Double.parseDouble(a[0]), Double.parseDouble(a[1])))
@@ -99,7 +99,7 @@ public class Calculator {
      * @param expression valid a mathematical expression as string
      * @return reduced passed expression were all addition and subtraction are computed and replaced by the answer
      */
-    public String computeAllAdditionAndSubtraction(String expression){
+    protected String computeAllAdditionAndSubtraction(String expression){
         while(Pattern.compile(additionOrSubtractionRegex)
                 .matcher(expression).find()){
             Optional<String> match = getFirstRegexMatch(expression, additionOrSubtractionRegex);
@@ -120,7 +120,7 @@ public class Calculator {
      * @param expression valid a mathematical expression as string
      * @return reduced passed expression were all multiplication and division are computed and replaced by the answer
      */
-    public String computeAllMultiplicationAndDivision(String expression){
+    protected String computeAllMultiplicationAndDivision(String expression){
         while(Pattern.compile(multiplicationOrDivisionRegex)
                 .matcher(expression).find()){
             Optional<String> match = getFirstRegexMatch(expression, multiplicationOrDivisionRegex);
@@ -147,7 +147,7 @@ public class Calculator {
      * @param expression valid a mathematical expression as string
      * @return reduced passed expression were all exponent are computed and replaced by the answer
      */
-    public String computeAllExponents(String expression){
+    protected String computeAllExponents(String expression){
         while(Pattern.compile(posNrExponentRegex)
                 .matcher(expression).find()){
             expression = expression.replaceFirst(posNrExponentRegex,
@@ -162,7 +162,7 @@ public class Calculator {
      * @param expression valid a mathematical expression as string
      * @return reduced passed expression were all brackets are computed and replaced by the answer
      */
-    public String resolveBrackets(String expression){
+    protected String resolveBrackets(String expression){
         while(Pattern.compile(bracketRegex)
                 .matcher(expression).find()){
             expression = expression.replaceFirst(bracketRegex,
