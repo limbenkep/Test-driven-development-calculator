@@ -7,7 +7,12 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
- *  This class is a calculator class whose compute method takes a mathematical expression as a string
+ * The Calculator class  computes the expression and returns the result.
+ * @author: Honorine Lima
+ * username:holi1900
+ * Course: DT042G
+ * Date: 2023-02-19
+ *  This class' compute method takes a mathematical expression as a string
  *  parse the expression, compute in order of operator precedence and return the answer as a string.
  *  The class also  has methods that validate the passed expression, remove white spaces,
  *  perform the different operation and format the results. All these are used in the compute

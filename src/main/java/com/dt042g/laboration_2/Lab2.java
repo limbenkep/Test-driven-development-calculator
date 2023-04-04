@@ -1,14 +1,14 @@
 package com.dt042g.laboration_2;
 
 /**
- * This program is a calculator that compute mathematical expression passed as a string and print the result.
- * The class is a utility class that acts as the main point for execution.
- * The expression is passed as by commandline, parser and computed and the result is printed to console.
- * The computation is done by the Calculator class.
+ * The class is the main point for execution for the calculator.
  * @author: Honorine Lima
  * username:holi1900
  * Course: DT042G
  * Date: 2023-02-19
+ * This program is a calculator that compute mathematical expression passed as a string and print the result.
+ * The expression is passed as by commandline, parser and computed and the result is printed to console.
+ * The computation is done by the Calculator class.
  */
 public class Lab2 {
     /**
